@@ -344,6 +344,8 @@ bool VirtualScanner::scanning(const string& filename, int view_num, bool flags, 
   }
   vector<Triangle> vecF; vecF.reserve(F_.cols());
   for (int i = 0; i < F_.cols(); i++) {
+    auto triangle = Triangle(vecP[F_(0, i)], vecP[F_(1, i)], vecP[F_(2, i)]);
+    if(triangle.is_degenerate()) continue;
     vecF.push_back(Triangle(vecP[F_(0, i)], vecP[F_(1, i)], vecP[F_(2, i)]));
   }
 

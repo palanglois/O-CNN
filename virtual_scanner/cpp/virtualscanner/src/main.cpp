@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     VirtualScanner scanner;
     scanner.scanning(all_files[i], view_num, flag, normalize);
     string out_path  = all_files[i].substr(0, all_files[i].rfind('.'));
-    scanner.save_binary(out_path+ ".points");
+    scanner.save_ply(out_path+ ".ply");
     clock_t t2 = clock();
 
     string messg = all_files[i].substr(all_files[i].rfind('\\') + 1) +
