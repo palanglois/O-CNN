@@ -80,7 +80,7 @@ def shoot_rays(args):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--shapenet_path', type=str, help='Input folder', required=True)
-    parser.add_argument('--virtualscan', type=str, help='Path to the virtual scanner executable', required=True)
+    parser.add_argument('--virtualscan', type=str, help='Path to the virtual scanner executable', default='virtual_scanner/build/virtualscanner')
     args = parser.parse_args()
 
     shoot_rays(EasyDict(args.__dict__))
