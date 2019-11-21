@@ -1,5 +1,6 @@
 import randomizePointCloud
 import pcSamplingInfRayShapeNet
+import sample30kpoints
 from easydict import EasyDict
 import argparse
 
@@ -12,8 +13,10 @@ def main():
 	args = parser.parse_args()
 	print("Infinite ray sampling...")
 	pcSamplingInfRayShapeNet.shoot_rays(EasyDict(args.__dict__))
-	print("Done! Random sampling...")
+	print("Done! Random Shuffling...")
 	randomizePointCloud.shuffle_folder(EasyDict(args.__dict__))
+	print("Done! Random Sampling...")
+	sample30kpoints.test_folder(EasyDict(args.__dict__))
 	print("Done!")
 
 if __name__ == "__main__":
