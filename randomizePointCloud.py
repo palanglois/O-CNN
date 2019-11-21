@@ -13,8 +13,8 @@ from easydict import EasyDict
 from pcSamplingInfRayShapeNet import Count
 
 def shuffle_pc(file, output_path, limit=None, count=None):
-	if not os.path.exists(output_path + ".npy"):
-		try:
+	try:
+		if not os.path.exists(output_path + ".npy"):
 			mesh = pymesh.load_mesh(file)
 
 			vertices = copy.deepcopy(mesh.vertices)
@@ -23,12 +23,12 @@ def shuffle_pc(file, output_path, limit=None, count=None):
 				permutation = permutation[:min(limit, len(permutation))]
 			vertices = vertices[permutation]
 			np.save(output_path + ".npy", vertices)
-		except:
-			count.add(output_path)
+	except:
+		Count.add(file)
+		print(Count.failed_example_path)
 
 
 def shuffle_folder(args):
-	count = Count()
 
 	ply_classes = "/".join([args.shapenet_path, "ply"])
 	npy_classes = "/".join([args.shapenet_path, "npy"])
@@ -40,12 +40,13 @@ def shuffle_folder(args):
 	classes = [x for x in next(os.walk(ply_classes))[1]]
 
 	for obj_class in classes:
+		print(obj_class)
 		npy_path = join(npy_classes, obj_class)
 		ply_path = join(ply_classes, obj_class)
 		if not exists(npy_path):
 			os.makedirs(npy_path)
 
-		onlyfiles = [(join(ply_path, f), join(npy_path, f), limit, count) for f in listdir(ply_path) if
+		onlyfiles = [(join(ply_path, f), join(npy_path, f), limit) for f in listdir(ply_path) if
 					 isfile(join(ply_path, f))]
 
 		class BatchCompletionCallBack(object):
@@ -67,8 +68,8 @@ def shuffle_folder(args):
 		_ = Parallel(n_jobs=-1, backend="multiprocessing") \
 			(delayed(shuffle_pc)(*i) for i in onlyfiles)
 
-	print(f"{count.failed_example} failed examples")
-	print(count.failed_example_path)
+	print(f"{Count.failed_example} failed examples")
+	print(Count.failed_example_path)
 
 
 def main():
